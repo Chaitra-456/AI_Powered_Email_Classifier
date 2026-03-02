@@ -1,0 +1,80 @@
+/* FIXED EmailDetail – neatly right side panel */
+.email-detail {
+  background: var(--card);
+  border-left: 1px solid rgba(0,0,0,0.08);
+  padding: 18px;
+  border-radius: 0;
+  height: calc(100vh - 80px);     /* FIX: limit height */
+  overflow-y: auto;               /* scroll inside only */
+  width: 100%;
+  max-width: 360px;               /* FIX: slight wider but not long */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Header */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-title {
+  font-weight: 700;
+  font-size: 17px;
+}
+
+/* Buttons */
+.spam-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.close-btn {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.10);
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Subject */
+.detail-subject {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Meta */
+.detail-meta {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Body */
+.detail-body {
+  background: #fbfbfb;
+  padding: 14px;
+  border-radius: 8px;
+  overflow-wrap: break-word;
+}
+
+/* Plain text */
+.plain-text {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* HTML email content */
+.html-body {
+  max-height: 400px;              /* FIX: prevents huge long HTML */
+  overflow-y: auto;               /* scroll only inside HTML */
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 6px;
+  background: white;
+}
