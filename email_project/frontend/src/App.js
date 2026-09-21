@@ -1,3 +1,4 @@
+
 // src/App.js
 import React, { useState } from "react";
 import Sidebar from "./components/sidebar";
@@ -29,11 +30,22 @@ export default function App() {
   ];
 
   async function handleLogin() {
-    if (!gmail || !appPass) return alert("Enter Gmail + App Password");
+    if (!gmail || !appPass) {
+      return alert("Enter Gmail + App Password");
+    }
+
     setStatus("loading");
 
     try {
       const res = await fetchEmails(gmail, appPass);
+
+      console.log("Backend response:", res);
+
+      if (res?.error) {
+        alert("Backend error: " + res.error);
+        setStatus("idle");
+        return;
+      }
 
       if (Array.isArray(res?.emails)) {
         setEmails(res.emails);
@@ -44,9 +56,10 @@ export default function App() {
 
       setStatus("success");
       setActiveCat("Inbox");
+
     } catch (err) {
-      console.error(err);
-      alert("Login failed.");
+      console.error("Login error:", err);
+      alert("Login failed: " + err.message);
       setStatus("idle");
     }
   }
@@ -58,7 +71,8 @@ export default function App() {
     try {
       const data = await getCategory(cat);
       setEmails(data || []);
-    } catch {
+    } catch (err) {
+      console.error("Category error:", err);
       setEmails([]);
     }
   }
@@ -89,7 +103,6 @@ export default function App() {
       </header>
 
       <div className="app-main">
-        {/* LEFT SIDEBAR */}
         {status === "success" ? (
           <Sidebar
             active={activeCat}
@@ -100,9 +113,7 @@ export default function App() {
           <div className="sidebar-placeholder" />
         )}
 
-        {/* MAIN CONTENT */}
         <main className="main-column">
-          {/* LOGIN SCREEN */}
           {status !== "success" && (
             <div className="login-center">
               <div className="login-card">
@@ -123,14 +134,18 @@ export default function App() {
                   onChange={(e) => setAppPass(e.target.value)}
                 />
 
-                <button className="btn primary" onClick={handleLogin}>
-                  {status === "loading" ? "Fetching..." : "Login & Fetch Inbox"}
+                <button
+                  className="btn primary"
+                  onClick={handleLogin}
+                >
+                  {status === "loading"
+                    ? "Fetching..."
+                    : "Login & Fetch Inbox"}
                 </button>
               </div>
             </div>
           )}
 
-          {/* EMAIL LIST (NO DUPLICATE CATEGORY ROW) */}
           {status === "success" && (
             <div className="inbox-area">
               <EmailList
@@ -141,13 +156,14 @@ export default function App() {
           )}
         </main>
 
-        {/* RIGHT EMAIL DETAIL PANEL */}
         <aside className="detail-column">
           <EmailDetail
             email={selectedEmail}
             onClose={() => setSelectedEmail(null)}
             onMarkSpam={(mail) => {
-              setEmails((prev) => prev.filter((e) => e !== mail));
+              setEmails((prev) =>
+                prev.filter((e) => e !== mail)
+              );
               setSelectedEmail(null);
             }}
           />
@@ -156,3 +172,4 @@ export default function App() {
     </div>
   );
 }
+

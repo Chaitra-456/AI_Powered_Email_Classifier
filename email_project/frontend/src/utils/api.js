@@ -1,6 +1,6 @@
 
 
-const BASE = "http://127.0.0.1:8000";
+const BASE = "https://ai-powered-email-classifier-backend.onrender.com";
 
 async function safeJson(resp) {
   try {
